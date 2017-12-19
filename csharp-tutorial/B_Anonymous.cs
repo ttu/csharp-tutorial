@@ -1,5 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using Xunit;
 
 namespace csharp_tutorial
@@ -37,54 +39,45 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public void Anonymous_Functions()
+        public void Dynamic_Immutable()
         {
-            // These are all same thing
+            dynamic immu = new { Name = "Immu" };
 
-            // Lambda syntax
-            Func<string, string> func = (s) => $"Hello {s}";
-            Func<string, string> func2 = (s) => { return $"Hello {s}"; };
-            // Old-school delegate syntax
-            Func<string, string> func3 = delegate (string s) { return $"Hello {s}"; };
-            // Or can just take reference to method
-            Func<string, string> func4 = GetHelloText;
+            Assert.Equal(immu.Name, "Immu");
 
-            // Hopefully some day compiler will get smart enough and we can just do this
-            //var func = (s) => { return $"Hello {s}"; };
+            // Dynamic objects are read only
+            // immu.Name = "Not possible";
 
-            Trace.WriteLine(func("World"));
-            Trace.WriteLine(func2("World"));
-            Trace.WriteLine(func3("World"));
-            Trace.WriteLine(func4("World"));
+            dynamic person = new ExpandoObject();
+            person.Name = "James";
+            person.Age = 50;
 
-            var sayer = new HelloSayer(func);
-            string text = sayer.Say("World");
+            Assert.Equal(50, person.Age);
 
-            var sayer2 = new HelloSayer((s) => $"Not {s}");
-            string text2 = sayer2.Say("Nice");
+            person.Age = 30;
+            Assert.Equal(30, person.Age);
 
-            Trace.WriteLine(text);
-            Trace.WriteLine(text2);
-        }
-
-        public class HelloSayer
-        {
-            private readonly Func<string, string> _say;
-
-            public HelloSayer(Func<string, string> say)
+            dynamic CreateObjectFor(params dynamic[] values)
             {
-                _say = say;
+                dynamic personExpando = new ExpandoObject();
+                var dictionary = (IDictionary<string, object>)personExpando;
+
+                foreach (var pair in values)
+                    dictionary.Add(pair.Item1, pair.Item2);
+
+                return personExpando;
             }
 
-            public string Say(string text)
-            {
-                return _say(text);
-            }
-        }
+            dynamic person2 = CreateObjectFor(Tuple.Create("Name", "James"), Tuple.Create("Age", 40));
 
-        private string GetHelloText(string text)
-        {
-            return $"Hello {text}";
+            // Common case is that you get some data, parse do some stuff and create a new object from it and send it
+            person2.Age = 50;
+            var json = JsonConvert.SerializeObject(person2);
+
+            // It is also possible to add methods
+            var expDict = (IDictionary<string, object>)person2;
+            expDict.Add("Say", new Action(() => { Console.WriteLine("Hello"); }));
+            person2.Say();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace csharp_tutorial
         [Fact]
         public void Hello_Event()
         {
-            var hello = new HelloEvent();
+            var hello = new HelloHandler();
             var vp = new ValueProcessor(hello);
 
             // Listen to ValueChanged Event with normal and anonymous function
@@ -41,7 +41,7 @@ namespace csharp_tutorial
         /// <summary>
         /// When CurrentValue is changed will invoke ValueChanged event
         /// </summary>
-        public class HelloEvent
+        public class HelloHandler
         {
             public event EventHandler<int> ValueChanged;
 
@@ -62,16 +62,16 @@ namespace csharp_tutorial
         }
 
         /// <summary>
-        /// Updates HelloEvents value periodically
+        /// Updates HelloHandler value periodically
         /// </summary>
         public class ValueProcessor
         {
-            private HelloEvent _helloEvent;
+            private HelloHandler _helloHandler;
             private CancellationTokenSource _cts = new CancellationTokenSource();
 
-            public ValueProcessor(HelloEvent helloEvent)
+            public ValueProcessor(HelloHandler helloHandler)
             {
-                _helloEvent = helloEvent;
+                _helloHandler = helloHandler;
                 Task.Factory.StartNew(UpdateValue, _cts.Token);
             }
 
@@ -87,7 +87,7 @@ namespace csharp_tutorial
                 while (token.IsCancellationRequested == false)
                 {
                     var rand = new Random(DateTime.Now.Millisecond);
-                    _helloEvent.CurrentValue = rand.Next(0, 100);
+                    _helloHandler.CurrentValue = rand.Next(0, 100);
                     Thread.Sleep(100);
                 }
             }
