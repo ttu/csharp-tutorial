@@ -73,5 +73,34 @@ namespace csharp_tutorial
 
             crunchNumber(2);
         }
+
+        [Fact]
+        public void Retry_Example()
+        {
+            int Add2(int i) => i + 2;
+
+            Assert.Equal(5, Add2(3));
+
+            var result = RetryHelper(() => Add2(4));
+            Assert.Equal(6, result);
+        }
+
+        public static T RetryHelper<T>(Func<T> action, int tryCount = 2)
+        {
+            while (true)
+            {
+                try
+                {
+                    return action();
+                }
+                catch (Exception)
+                {
+                    if (--tryCount > 0)
+                        continue;
+
+                    throw;
+                }
+            }
+        }
     }
 }

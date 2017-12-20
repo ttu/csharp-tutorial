@@ -31,7 +31,7 @@ namespace csharp_tutorial
             // Properties can have functionality
             public int CurrentValue
             {
-                get { return _myValue; }
+                get => _myValue;
                 set
                 {
                     if (_myValue != value)

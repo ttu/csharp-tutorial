@@ -5,6 +5,8 @@ namespace csharp_tutorial
 {
     public class B3_Composition
     {
+        // In real life inheritance/composition cases are never this simple
+
         public abstract class Handler
         {
             public abstract string Handle(string input);
@@ -27,7 +29,7 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public void Handler_Ingeritence()
+        public void Inheritance()
         {
             Handler handlerFactory(int type)
             {
@@ -39,9 +41,11 @@ namespace csharp_tutorial
 
             Handler h1 = handlerFactory(0);
             var response = h1.Handle("HeLlo");
+            Assert.Equal("hello", response);
 
             Handler h2 = handlerFactory(1);
             var response2 = h2.Handle("HeLlo");
+            Assert.Equal("HELLO", response2);
         }
 
         public class HandlerComposition
@@ -54,13 +58,23 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public void Anonymous_Composition()
+        public void Composition()
         {
-            var h1 = new HandlerComposition((i) => i.ToLower());
-            var response = h1.Handle("HeLlo");
+            HandlerComposition Builder(int type)
+            {
+                if (type == 0)
+                    return new HandlerComposition((i) => i.ToLower());
+                else
+                    return new HandlerComposition((i) => i.ToUpper());
+            }
 
-            var h2 = new HandlerComposition((i) => i.ToUpper());
+            HandlerComposition h1 = Builder(0);
+            var response = h1.Handle("HeLlo");
+            Assert.Equal("hello", response);
+
+            HandlerComposition h2 = Builder(1);
             var response2 = h2.Handle("HeLlo");
+            Assert.Equal("HELLO", response2);
         }
     }
 }

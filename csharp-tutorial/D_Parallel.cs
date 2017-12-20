@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,6 +10,16 @@ namespace csharp_tutorial
 {
     public class D_Parallel
     {
+        [Fact]
+        public async Task Multiple()
+        {
+            var ids = new string[] { "iddqd", "idkfq", "abba5", "acdc1" };
+
+            var tasks = ids.Select(i => SensorData.GetDataAsync(i));
+
+            var results = await Task.WhenAll(tasks);
+        }
+
         [Fact]
         public void Parallel_ForEach()
         {
