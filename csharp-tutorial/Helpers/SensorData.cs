@@ -12,7 +12,8 @@ namespace csharp_tutorial
         {
             using (var client = new HttpClient())
             {
-                // HttpClient doesn't have sync methods, so run GetAsync in own thread
+                // HttpClient doesn't have sync methods, so call GetAsync in an own thread
+                // If you need sync http methods you can also use WebRequest
                 var response = Task.Run(() => client.GetAsync($"{_url}{sensrorId}")).GetAwaiter().GetResult();
 
                 if (!response.IsSuccessStatusCode)
