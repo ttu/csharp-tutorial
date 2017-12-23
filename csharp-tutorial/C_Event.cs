@@ -22,6 +22,9 @@ namespace csharp_tutorial
             hello.ValueChanged += (s, e) => { Trace.WriteLine($"From anonymous: New value is {e}"); };
             hello.ValueChanged += Hello_ValueChanged;
 
+            // Difference with Event and multicastdelegate is that although it's public, only owner can set it to null
+            // hello.ValueChanged = null;
+
             // Running for 5 seconds
             var sw = Stopwatch.StartNew();
             while (sw.ElapsedMilliseconds < 5000) { }

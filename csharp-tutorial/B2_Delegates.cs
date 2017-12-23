@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace csharp_tutorial
@@ -60,7 +61,7 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public void MulticastDelegates()
+        public async Task MulticastDelegates()
         {
             Action<int> crunchNumber = (i) => { /* Do some fancy stuff with this integer */ };
 
@@ -68,8 +69,15 @@ namespace csharp_tutorial
 
             // Later we decide that we need to do some writing to log when action is executed
             crunchNumber += (i) => Console.WriteLine(i);
-            // Later also writing to Trace
-            crunchNumber += (i) => Trace.WriteLine(i);
+
+            crunchNumber(2);
+
+            // Later also add POST
+            crunchNumber += async (i) =>
+            {
+                //TODO: POST with http to some external service
+                await Task.Delay(100);
+            };
 
             crunchNumber(2);
         }
@@ -79,9 +87,16 @@ namespace csharp_tutorial
         {
             int Add2(int i) => i + 2;
 
+            T MaybeException<T>(Func<T> action)
+            {
+                if (DateTime.Now.Ticks % 2 == 0)
+                    throw new Exception("Bad luck");
+                return action();
+            }
+
             Assert.Equal(5, Add2(3));
 
-            var result = RetryHelper(() => Add2(4));
+            var result = RetryHelper(() => MaybeException(() => Add2(4)));
             Assert.Equal(6, result);
         }
 

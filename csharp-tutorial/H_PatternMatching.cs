@@ -1,9 +1,5 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace csharp_tutorial
@@ -13,7 +9,7 @@ namespace csharp_tutorial
         [Fact]
         public void Switch()
         {
-            var items = new List<object> { 1, 5, "Hello", new List<int> { 1, 2, 3} };
+            var items = new List<object> { 1, 5, "Hello", new List<int> { 1, 2, 3 }, new List<int> { 1, -2 } };
 
             foreach (var item in items)
             {
@@ -30,6 +26,10 @@ namespace csharp_tutorial
 
                     case IEnumerable<int> e when e.All(i => i > 0):
                         break;
+
+                    case IEnumerable<int> e:
+                        break;
+
                     default:
                         break;
                 }
