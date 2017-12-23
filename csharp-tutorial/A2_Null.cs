@@ -12,8 +12,21 @@ namespace csharp_tutorial
 
             // Null coalescing, if left side is null, take right side
             string print = value ?? "default value";
+
+            Assert.Equal("default value", print);
+
             // Same as normal one line condition
             string print2 = value != null ? value : "default value";
+
+            Assert.Equal("default value", print2);
+
+            // Set something to value
+            value = "This has something";
+
+            string print3 = value ?? "default value";
+
+            Assert.Equal("This has something", print3);
+
         }
 
         public class NullExample
@@ -47,17 +60,11 @@ namespace csharp_tutorial
 
             string text3 = hello?.Child?.Text;
             Assert.Equal(text, text3);
-        }
 
-        [Fact]
-        public void NullCoalescing_Check()
-        {
-            var example = new NullExample();
+            // Null coalescing check
+            var text4 = hello?.Child?.Child?.Text ?? "Not set";
 
-            // If value is not null left side is processed, else right side
-            var text = example.Child?.Text ?? "Not set";
-
-            Assert.Equal("Not set", text);
+            Assert.Equal("Not set", text4);
         }
 
         [Fact]

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class E_Linq
+    public class A3_Linq
     {
         [Fact]
         public void Lists_Etc()
@@ -40,7 +40,8 @@ namespace csharp_tutorial
         [Fact]
         public void Linq()
         {
-            // Linq was popularised before all this was cool and MS decided to use SQL namespace instead of mathematical one
+            // Linq was added to standard library before all this was widely used and
+            // MS decided to use SQL namespace instead of mathematical one
             // map is select
             // filter is where
             // reduce is aggregate
@@ -73,11 +74,11 @@ namespace csharp_tutorial
 
             // Reduce (list to single item)
             var totalExpense = team.Select(x => x.Salary).Sum();
-            var totalWithAfgg = team.Select(x => x.Salary).Aggregate((a, b) => a + b);
-            var allInList = team.Select(x => x.Name).Aggregate((a, b) => a + "," + b);
+            var totalWithAfgg = team.Select(x => x.Salary).Aggregate((prev, curr) => prev + curr);
+            var allNames = team.Select(x => x.Name).Aggregate((prev, curr) => prev + "," + curr);
 
             var batch1bonus = new int[] { 5, 2, 3, 4 };
-            var bonusAdded = batch1.Zip(batch1bonus, (a, b) => new { Name = a.Name, Pay = a.Salary + b });
+            var bonusAdded = batch1.Zip(batch1bonus, (person, bonus) => new { person.Name, Pay = person.Salary + bonus });
         }
 
         [Fact]
