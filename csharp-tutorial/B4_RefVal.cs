@@ -67,5 +67,18 @@ namespace csharp_tutorial
         {
             person = new Person { Name = "Sammy" };
         }
+
+        [Fact]
+        public void Out()
+        {
+            void GetSome(out int value)
+            {
+                value = 5;
+            }
+
+            GetSome(out var myValue);
+
+            Assert.Equal(5, myValue);
+        }
     }
 }

@@ -65,5 +65,37 @@ namespace csharp_tutorial
         {
             return ("Timmy", 25);
         }
+
+        public class Person
+        {
+            private readonly string _firstName;
+            private readonly string _lastName;
+
+            public Person(string firstName, string lastName)
+            {
+                _firstName = firstName;
+                _lastName = lastName;
+            }
+
+            public int Age { get; set; }
+
+            public void Deconstruct(out string fullName, out int age)
+            {
+                fullName = $"{_firstName} {_lastName}";
+                age = Age;
+            }
+        }
+
+        [Fact]
+        public void Deconstruct()
+        {
+            var person = new Person("Timmy", "Tester");
+            person.Age = 30;
+
+            var (name, age) = person;
+
+            Assert.Equal("Timmy Tester", name);
+            Assert.Equal(30, age);
+        }
     }
 }
