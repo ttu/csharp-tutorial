@@ -199,5 +199,30 @@ namespace csharp_tutorial
             // Dictionaries and Hashsets use HashCode to compare elements
             public override int GetHashCode() => Ssn.GetHashCode();
         }
+
+        public class User
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
+        }
+
+        [Fact]
+        public void Lazy()
+        {
+            var names = new[] { "Timmy", "Sammy" };
+
+            // Creteate new User for Timmy and Sammy
+            var selected = names.Select(e => new User { Name = e });
+
+            // Select Timmy
+            var timmy = selected.Where(e => e.Name == "Timmy");
+
+            foreach (var s in selected)
+                s.Age = 40;
+
+            var timmysAge = timmy.SingleOrDefault().Age;
+
+            Assert.Equal(0, timmysAge);
+        }
     }
 }
