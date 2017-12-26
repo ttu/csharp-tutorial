@@ -61,7 +61,7 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public async Task MulticastDelegates()
+        public void MulticastDelegates()
         {
             Action<int> crunchNumber = (i) => { /* Do some fancy stuff with this integer */ };
 

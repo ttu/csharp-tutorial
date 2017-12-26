@@ -156,7 +156,7 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public async Task Tasks()
+        public void Tasks()
         {
             // var longProcess = Task.Factory.StartNew(() => { Thread.Sleep(1000); });
             // Task.Run is a shorthand for Task.Factory.StartNew with some default argumnents

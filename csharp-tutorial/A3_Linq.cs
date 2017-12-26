@@ -196,7 +196,7 @@ namespace csharp_tutorial
 
             public override bool Equals(object obj) => obj is Requester2 ? Ssn == ((Requester2)obj).Ssn : false;
 
-            // Dictionaries and Hashsets use HashCode to compare elements
+            // Dictionaries and Hashsets use hash code to compare elements
             public override int GetHashCode() => Ssn.GetHashCode();
         }
 

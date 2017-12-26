@@ -26,7 +26,6 @@ namespace csharp_tutorial
             string print3 = value ?? "default value";
 
             Assert.Equal("This has something", print3);
-
         }
 
         public class NullExample
@@ -51,7 +50,7 @@ namespace csharp_tutorial
                 // Because of null values NullReferenceException is thrown
                 string textException = hello.Child.Child.Child.Text;
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
             }
 
