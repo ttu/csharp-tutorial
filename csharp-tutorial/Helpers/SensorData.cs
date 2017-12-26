@@ -39,5 +39,25 @@ namespace csharp_tutorial
                 return sensor.data;
             }
         }
+
+        public static async Task<SensorDto> GetSensorAsync(string sensrorId = "iddqd")
+        {
+            using (var client = new HttpClient())
+            {
+                var response = await client.GetAsync($"{_url}{sensrorId}");
+
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                var sensorJson = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<SensorDto>(sensorJson);
+            }
+        }
+    }
+
+    public class SensorDto
+    {
+        public string Id { get; set; }
+        public double Data { get; set; }
     }
 }
