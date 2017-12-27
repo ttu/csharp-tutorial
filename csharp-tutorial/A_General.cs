@@ -92,14 +92,34 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public void Null_Coalescing()
+        public void ExtensionMethods()
         {
-            string value = null;
+            var number = 200;
 
-            // Null coalescing, if left side is null, take right side
-            string print = value ?? "default value";
-            // Same as normal one line condition
-            string print2 = value != null ? value : "default value";
+            Assert.True(number.IsPositive());
+
+            var person = new Person { FirstName = "Larry", LastName = "Smith" };
+
+            Assert.Equal("Larry Smith", person.FullName());
+        }
+    }
+
+    public class Person
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+
+    public static class MyExtensions
+    {
+        public static bool IsPositive(this int value)
+        {
+            return value > 0;
+        }
+
+        public static string FullName(this Person person)
+        {
+            return person.FirstName + " " + person.LastName;
         }
     }
 }
