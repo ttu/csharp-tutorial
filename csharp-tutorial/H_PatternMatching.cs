@@ -9,19 +9,19 @@ namespace csharp_tutorial
         [Fact]
         public void Switch()
         {
-            var items = new List<object> { 1, 5, "Hello", new List<int> { 1, 2, 3 }, new List<int> { 1, -2 } };
+            var items = new List<object> { "Hello", 1, 5, new List<int> { 1, 2, 3 }, new List<int> { 1, -2 } };
 
             foreach (var item in items)
             {
                 switch (item)
                 {
+                    case string e:
+                        break;
+
                     case int e when e > 4:
                         break;
 
                     case int e:
-                        break;
-
-                    case string e:
                         break;
 
                     case IEnumerable<int> e when e.All(i => i > 0):
@@ -45,7 +45,7 @@ namespace csharp_tutorial
             {
                 if (item is int e)
                 { }
-                else if (item is string)
+                else if (item is string st)
                 { }
             }
         }

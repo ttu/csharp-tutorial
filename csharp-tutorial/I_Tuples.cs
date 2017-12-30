@@ -5,8 +5,8 @@ namespace csharp_tutorial
 {
     public class I_Tuples
     {
-        // Tuples fall little bit to the same category as dynamic. Usually not needed or recommended in production code,
-        // as you should use classes instead, but makes prototyping faster
+        // Tuples fall a little bit to the same category as dynamic. Usually not needed or recommended in the production code,
+        // as you should use classes instead, but using these while e.g. prototyping is faster
 
         [Fact]
         public void TupleTest()

@@ -88,5 +88,58 @@ namespace csharp_tutorial
 
             var result = sensorTask.Result;
         }
+
+        public class InputHandlerOptions
+        {
+            public int MaxValue = 0;
+            public bool MustBeEven = false;
+            public Action OnSuccess;
+            public Action OnFail;
+        }
+
+        public class InputHandler
+        {
+            private readonly InputHandlerOptions _opts = new InputHandlerOptions();
+
+            public void AddOptions(Action<InputHandlerOptions> add) => add(_opts);
+
+            public void Handle(int input)
+            {
+                if (input > _opts.MaxValue || (_opts.MustBeEven && input % 2 != 0))
+                    _opts.OnFail();
+
+                _opts.OnSuccess();
+            }
+        }
+
+        [Fact]
+        public void InputHandlerExample()
+        {
+            var myMax = 10;
+            var mustBeEven = false;
+            var isSuccess = false;
+
+            var handler = new InputHandler();
+
+            handler.AddOptions((opts) =>
+            {
+                opts.MaxValue = myMax;
+                opts.MustBeEven = mustBeEven;
+                opts.OnSuccess = new Action(() =>
+                {
+                    isSuccess = true;
+                });
+                opts.OnFail = new Action(() =>
+                {
+                    isSuccess = false;
+                });
+            });
+
+            handler.Handle(9);
+            Assert.True(isSuccess);
+
+            handler.Handle(11);
+            Assert.False(isSuccess);
+        }
     }
 }

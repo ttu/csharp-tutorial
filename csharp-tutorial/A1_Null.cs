@@ -3,7 +3,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class A2_Null
+    public class A1_Null
     {
         [Fact]
         public void Null_Coalescing()

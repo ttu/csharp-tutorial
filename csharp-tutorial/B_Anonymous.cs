@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using Xunit;
 
 namespace csharp_tutorial
@@ -62,6 +63,7 @@ namespace csharp_tutorial
                 dynamic personExpando = new ExpandoObject();
                 var dictionary = (IDictionary<string, object>)personExpando;
 
+                // We just have to rely that values are tuples, but that is normal with dynamic programming
                 foreach (var pair in values)
                     dictionary.Add(pair.Item1, pair.Item2);
 
