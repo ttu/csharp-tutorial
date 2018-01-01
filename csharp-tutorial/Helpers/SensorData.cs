@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -6,8 +8,30 @@ namespace csharp_tutorial
 {
     public static class SensorData
     {
-        private static string _url = "http://dummy-sensors.azurewebsites.net/api/sensor/";
+        private const string URL = "http://dummy-sensors.azurewebsites.net/api/sensor/";
 
+        public static double GetDataSync(string sensorId = "iddqd")
+        {
+            var request = HttpWebRequest.Create($"{URL}{sensorId}") as HttpWebRequest;
+            request.Method = "GET";
+
+            using (var response = request.GetResponse() as HttpWebResponse)
+            {
+                var dataStream = response.GetResponseStream();
+                var reader = new StreamReader(dataStream);
+
+                var sensorJson = reader.ReadToEnd();
+
+                reader.Close();
+                dataStream.Close();
+
+                dynamic sensor = JsonConvert.DeserializeObject(sensorJson);
+
+                return sensor.data;
+            }
+        }
+
+        /*
         public static double GetDataSync(string sensrorId = "iddqd")
         {
             using (var client = new HttpClient())
@@ -24,12 +48,13 @@ namespace csharp_tutorial
                 return sensor.data;
             }
         }
+        */
 
         public static async Task<double> GetDataAsync(string sensrorId = "iddqd")
         {
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync($"{_url}{sensrorId}");
+                var response = await client.GetAsync($"{URL}{sensrorId}");
 
                 if (!response.IsSuccessStatusCode)
                     return double.MinValue;
@@ -44,7 +69,7 @@ namespace csharp_tutorial
         {
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync($"{_url}{sensrorId}");
+                var response = await client.GetAsync($"{URL}{sensrorId}");
 
                 if (!response.IsSuccessStatusCode)
                     return null;

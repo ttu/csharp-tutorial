@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace csharp_tutorial
@@ -73,10 +72,9 @@ namespace csharp_tutorial
             crunchNumber(2);
 
             // Later also add POST
-            crunchNumber += async (i) =>
+            crunchNumber += (i) =>
             {
                 //TODO: POST with http to some external service
-                await Task.Delay(100);
             };
 
             crunchNumber(2);

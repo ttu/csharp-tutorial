@@ -4,26 +4,38 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class B5_Closures
+    public class B7_Closures
     {
-        private void DoCalcluation(Func<int, int> adder, int expected)
-        {
-            var result = adder(5);
-            Assert.Equal(expected, result);
-        }
-
         [Fact]
         public void Simple()
         {
             int myValue = 4;
-            var adder = new Func<int, int>(i => myValue + i);
 
-            DoCalcluation(adder, 9);
+            var adder = new Func<int, int>(i =>
+            {
+                return myValue + i;
+            });
+
+            var result = adder(5);
+            Assert.Equal(9, result);
+
+            //DoCalcluation(adder, 9);
+            //Assert.Equal(9, result);
 
             // myValue will change inside closure
             myValue = 6;
 
-            DoCalcluation(adder, 11);
+            var result2 = adder(5);
+            Assert.Equal(11, result2);
+
+            //DoCalcluation(adder, 11);
+            //Assert.Equal(11, result2);
+        }
+
+        private void DoCalcluation(Func<int, int> adder, int expected)
+        {
+            var result = adder(5);
+            Assert.Equal(expected, result);
         }
 
         [Fact]
