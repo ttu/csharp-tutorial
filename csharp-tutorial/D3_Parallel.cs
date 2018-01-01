@@ -1,15 +1,19 @@
-﻿using System.Collections.Concurrent;
+﻿using csharp_tutorial.Helpers;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class D3_Parallel
     {
+        public D3_Parallel(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+
         [Fact]
         public void Parallel_ForEach()
         {

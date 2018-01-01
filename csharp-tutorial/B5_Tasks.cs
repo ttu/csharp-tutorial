@@ -1,13 +1,19 @@
-﻿using System;
+﻿using csharp_tutorial.Helpers;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class B5_Tasks
     {
+        public B5_Tasks(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+
         [Fact]
         public void RunThread()
         {
@@ -17,6 +23,7 @@ namespace csharp_tutorial
                 {
                     // Do something important
                     Thread.Sleep(1000);
+                    Trace.WriteLine("In the background");
                 }
             }
 
@@ -35,6 +42,7 @@ namespace csharp_tutorial
                 while (true)
                 {
                     Thread.Sleep(1000);
+                    Trace.WriteLine("In the background");
                 }
             }
 
@@ -67,7 +75,6 @@ namespace csharp_tutorial
             Assert.Equal(2, result);
         }
 
-
         [Fact]
         public async Task RunAtBackground()
         {
@@ -82,9 +89,11 @@ namespace csharp_tutorial
                 while (token.IsCancellationRequested == false)
                 {
                     var sensorToFetch = collection.Take(token);
-                    var result = SensorData.GetSensorAsync(sensorToFetch);
+                    // .Result is a blocking action
+                    var sensorData = SensorData.GetSensorAsync(sensorToFetch).Result;
 
                     // Do something nice with the result
+                    Trace.WriteLine(JsonConvert.SerializeObject(sensorData));
                 }
             }, token);
 

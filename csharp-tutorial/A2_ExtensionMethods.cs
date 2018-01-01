@@ -14,7 +14,7 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public  void ExtensionMethods_Class()
+        public void ExtensionMethods_Class()
         {
             var person = new Person { FirstName = "Larry", LastName = "Smith" };
             Assert.Equal("Larry Smith", person.FullName());

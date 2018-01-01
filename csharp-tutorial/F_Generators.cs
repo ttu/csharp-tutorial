@@ -1,19 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using csharp_tutorial.Helpers;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
-    public class Generators
+    public class F_Generators
     {
+        public F_Generators(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+
         public class WebRequester
         {
             public IEnumerable<double> GetValues()
             {
+                yield return -1;
+
                 while (true)
                 {
-                    yield return -1;
                     yield return SensorData.GetDataSync("iddqd");
                     yield return SensorData.GetDataSync("idkfa");
                 }

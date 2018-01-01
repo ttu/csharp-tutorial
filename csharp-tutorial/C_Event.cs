@@ -1,14 +1,18 @@
-﻿using System;
+﻿using csharp_tutorial.Helpers;
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class C_Event
     {
         // Events are not much used in web applications, but are real handy in real time systems
+
+        public C_Event(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
 
         [Fact]
         public void Hello_Event()

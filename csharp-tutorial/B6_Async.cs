@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using csharp_tutorial.Helpers;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class B6_Async
     {
+        public B6_Async(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+
         [Fact]
         public async Task TaskAndResult()
         {

@@ -1,5 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace csharp_tutorial

@@ -1,11 +1,15 @@
-﻿using System;
+﻿using csharp_tutorial.Helpers;
+using System;
 using System.Diagnostics;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class B2_Delegates
     {
+        public B2_Delegates(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+
         [Fact]
         public void Anonymous_Functions()
         {
@@ -62,12 +66,12 @@ namespace csharp_tutorial
         [Fact]
         public void MulticastDelegates()
         {
-            Action<int> crunchNumber = (i) => { /* Do some fancy stuff with this integer */ };
+            Action<int> crunchNumber = (i) => { Trace.WriteLine($"Do some fancy stuff with this integer {i}"); };
 
-            crunchNumber(2);
+            crunchNumber(1);
 
             // Later we decide that we need to do some writing to log when action is executed
-            crunchNumber += (i) => Console.WriteLine(i);
+            crunchNumber += (i) => Trace.WriteLine($"Writing to log {i}");
 
             crunchNumber(2);
 
@@ -75,9 +79,10 @@ namespace csharp_tutorial
             crunchNumber += (i) =>
             {
                 //TODO: POST with http to some external service
+                Trace.WriteLine($"POST {i}");
             };
 
-            crunchNumber(2);
+            crunchNumber(3);
         }
 
         [Fact]
@@ -108,6 +113,8 @@ namespace csharp_tutorial
                 }
                 catch (Exception)
                 {
+                    Trace.WriteLine("Got exception");
+
                     if (--tryCount > 0)
                         continue;
 
