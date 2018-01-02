@@ -3,7 +3,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class B3_Composition
+    public class CompositionExamples
     {
         // In real life inheritance/composition cases are never this simple
 

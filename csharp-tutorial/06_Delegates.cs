@@ -6,9 +6,9 @@ using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
-    public class B2_Delegates
+    public class DelegateExamples
     {
-        public B2_Delegates(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+        public DelegateExamples(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
 
         [Fact]
         public void Anonymous_Functions()

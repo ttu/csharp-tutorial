@@ -4,7 +4,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class B7_Closures
+    public class Closures
     {
         [Fact]
         public void Simple()

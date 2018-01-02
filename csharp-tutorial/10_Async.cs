@@ -8,9 +8,9 @@ using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
-    public class B6_Async
+    public class AsyncExamples
     {
-        public B6_Async(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+        public AsyncExamples(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
 
         [Fact]
         public async Task TaskAndResult()

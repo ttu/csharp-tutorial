@@ -6,7 +6,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class G_Json
+    public class JsonExamples
     {
         [Fact]
         public async Task Get_Hsl_Data()

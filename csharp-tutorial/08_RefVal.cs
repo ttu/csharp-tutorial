@@ -2,7 +2,7 @@
 
 namespace csharp_tutorial
 {
-    public class B4_RefVal
+    public class RefVal
     {
         // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/passing-parameters
         // Types are passed to methods by value

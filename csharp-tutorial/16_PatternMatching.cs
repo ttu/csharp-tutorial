@@ -4,7 +4,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class H_PatternMatching
+    public class PatternMatching
     {
         [Fact]
         public void Switch()

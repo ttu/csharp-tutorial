@@ -7,9 +7,9 @@ using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
-    public class F_Generators
+    public class Generators
     {
-        public F_Generators(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+        public Generators(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
 
         public class WebRequester
         {

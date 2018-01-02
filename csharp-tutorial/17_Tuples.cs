@@ -3,7 +3,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class I_Tuples
+    public class Tuples
     {
         // Tuples fall a little bit to the same category as dynamic. Usually not needed or recommended in the production code,
         // as you should use classes instead, but using these while e.g. prototyping is faster

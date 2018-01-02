@@ -5,7 +5,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class A3_Linq
+    public class LinqExamples
     {
         [Fact]
         public void Lists_Etc()

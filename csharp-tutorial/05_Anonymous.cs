@@ -7,7 +7,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class B_Anonymous
+    public class AnonymousExamples
     {
         [Fact]
         public void Implicit_Type()

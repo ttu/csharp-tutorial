@@ -4,7 +4,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class A2_ExensionMethods
+    public class ExensionMethods
     {
         [Fact]
         public void ExtensionMethods_Value()

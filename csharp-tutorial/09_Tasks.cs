@@ -10,9 +10,9 @@ using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
-    public class B5_Tasks
+    public class TaskExamples
     {
-        public B5_Tasks(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+        public TaskExamples(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
 
         [Fact]
         public void RunThread()

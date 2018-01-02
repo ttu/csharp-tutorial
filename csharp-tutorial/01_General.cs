@@ -2,7 +2,7 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    public class A_General
+    public class General
     {
         public class Hello
         {
@@ -90,5 +90,20 @@ namespace csharp_tutorial
 
             Assert.Equal("Ramon", capitalized);
         }
+
+        public class Priv
+        {
+            private int Hidden { get; set; }
+
+            protected int LittleVisible { get; set; }
+
+            public int Visible { get; set; }
+        }
+
+        internal class VisibleOnlyInsideAssembly
+        { }
+
+        public class VisibleToAll
+        { }
     }
 }

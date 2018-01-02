@@ -10,9 +10,9 @@ using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
-    public class D3_Parallel
+    public class ParallelExamples
     {
-        public D3_Parallel(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
+        public ParallelExamples(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
 
         [Fact]
         public void Parallel_ForEach()
