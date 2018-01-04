@@ -80,5 +80,33 @@ namespace csharp_tutorial
 
             Assert.Equal(5, myValue);
         }
+
+        private class User
+        {
+            public string Ssn { get; set; }
+
+            public string Name { get; set; }
+
+            public override bool Equals(object obj) => obj is User ? Ssn == ((User)obj).Ssn : false;
+
+            public override int GetHashCode() => Ssn.GetHashCode();
+        }
+
+        [Fact]
+        public void EqualsExample()
+        {
+            var person1 = new Person { Name = "James" };
+            var person2 = new Person { Name = "James" };
+
+            Assert.False(person1.Equals(person2));
+            Assert.False(person1 == person2);
+            Assert.True(person1 == person1);
+
+            var user1 = new User { Ssn = "12345" };
+            var user2 = new User { Ssn = "12345" };
+
+            Assert.True(user1.Equals(user2));
+            Assert.False(user1 == user2);
+        }
     }
 }

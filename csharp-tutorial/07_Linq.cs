@@ -144,16 +144,16 @@ namespace csharp_tutorial
             requestSet = requests.Select(s => new
             {
                 RequestId = s.Key,
-                Ssn = s.Value.OrderBy(r => r.Ssn).Select(r => r.Ssn).Aggregate((c, n) => c + "," + n)
+                SsnList = s.Value.OrderBy(r => r.Ssn).Select(r => r.Ssn).Aggregate((prev, curr) => prev + "," + curr)
             })
-            .GroupBy(s => s.Ssn)
+            .GroupBy(s => s.SsnList)
             .Select(s => Tuple.Create(s.Select(r => r.RequestId).ToList(), requests[s.First().RequestId]));
         }
 
         [Fact]
         public void Compare()
         {
-            // All thata can also be implemented with using objects Equals method
+            // All thata can also be implemented with using object's Equals method
 
             var requests = new Dictionary<string, IList<Requester2>>();
 
@@ -186,6 +186,15 @@ namespace csharp_tutorial
             var hasAll = requests["A"].All(requests["B"].Contains);
 
             Assert.True(hasAll);
+
+            var results = requests["A"].Contains(requests["B"].First(e => e.Ssn == "2"));
+            Assert.False(results);
+
+            results = requests["A"].Contains(requests["A"].First(e => e.Ssn == "2"));
+            Assert.False(results);
+
+            results = requests["A"].Contains(new Requester2 { Ssn = "2" });
+            Assert.False(results);
         }
 
         private class Requester2
