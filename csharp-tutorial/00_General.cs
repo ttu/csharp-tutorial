@@ -91,11 +91,11 @@ namespace csharp_tutorial
             Assert.Equal("Ramon", capitalized);
         }
 
-        public class Priv
+        public class NormalClass
         {
             private int Hidden { get; set; }
 
-            protected int LittleVisible { get; set; }
+            protected int VisibleToParent { get; set; }
 
             public int Visible { get; set; }
         }

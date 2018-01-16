@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
 using Xunit;
 
 namespace csharp_tutorial
@@ -80,6 +79,29 @@ namespace csharp_tutorial
             var expDict = (IDictionary<string, object>)person2;
             expDict.Add("Say", new Action(() => { Console.WriteLine("Hello"); }));
             person2.Say();
+        }
+
+        [Fact]
+        public void DynamicsCompilerOff()
+        {
+            int a = GetNumber2IfParameterTrue(true);
+
+            int b = GetNumber2IfParameterTrue(false);
+        }
+
+        private int GetNumber2IfParameterTrue(dynamic isTrue)
+        {
+            dynamic GetInner(bool check)
+            {
+                if (check)
+                    return 2;
+                else
+                    return "1";
+            }
+
+            // When using dynamics, compiler will not give errors on compile time
+            var value = GetInner(isTrue);
+            return value;
         }
     }
 }
