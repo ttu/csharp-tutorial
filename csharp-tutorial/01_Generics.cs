@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using static csharp_tutorial.LinqExamples;
 
 namespace csharp_tutorial
 {
@@ -49,6 +48,12 @@ namespace csharp_tutorial
                 ["test"] = new User { Age = 30 },
                 ["unit"] = new User { Age = 25 },
             };
+        }
+
+        public class User
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
         }
     }
 }

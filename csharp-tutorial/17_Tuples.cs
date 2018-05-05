@@ -48,22 +48,31 @@ namespace csharp_tutorial
             Assert.Equal("Timmy", result.name);
             Assert.Equal(25, result.age);
 
-            var (name, age) = PersonInfo();
+            var i = GetPersonInfo();
 
-            var p = PersonInfo2();
+            Assert.Equal("Timmy", i.Item1);
+            Assert.Equal(25, i.Item2);
+
+            var (name, age) = GetPersonInfo();
+
+            var p = GetPersonInfoNamed();
 
             Assert.Equal("Timmy", p.name);
             Assert.Equal(25, p.age);
         }
 
-        private static (string, int) PersonInfo()
+        private static (string, int) GetPersonInfo()
         {
-            return ("Timmy", 25);
+            var myName = "Timmy";
+            var myAge = 25;
+            return (myName, myAge);
         }
 
-        private static (string name, int age) PersonInfo2()
+        private static (string name, int age) GetPersonInfoNamed()
         {
-            return ("Timmy", 25);
+            var myName = "Timmy";
+            var myAge = 25;
+            return (myName, myAge);
         }
 
         public class Person
@@ -89,8 +98,10 @@ namespace csharp_tutorial
         [Fact]
         public void Deconstruct()
         {
-            var person = new Person("Timmy", "Tester");
-            person.Age = 30;
+            var person = new Person("Timmy", "Tester")
+            {
+                Age = 30
+            };
 
             var (name, age) = person;
 

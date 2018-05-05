@@ -82,6 +82,45 @@ namespace csharp_tutorial
         }
 
         [Fact]
+        public void Linq_ReferenceTypes()
+        {
+            var employees = new List<Person>(10)
+            {
+                new Person { Name = "Andy", Location = 1, Salary = 1 },
+                new Person { Name = "Thomas", Location = 2, Salary = 1 },
+                new Person { Name = "Jefferson", Location = 2, Salary = 2 },
+                new Person { Name = "Ben", Location = 1, Salary = 2 }
+            };
+
+            // Give raise to all in location 2
+            employees
+                .Where(x => x.Location == 2)
+                .ToList()
+                .ForEach(x => x.Salary += 1);
+
+            // Because person is a reference type, original item's salary changes
+        }
+
+        [Fact]
+        public void Linq_Lazy()
+        {
+            var names = new[] { "Timmy", "Sammy" };
+
+            // Creteate new Person for Timmy and Sammy
+            var selected = names.Select(e => new Person { Name = e });
+
+            // Select Timmy
+            var timmy = selected.Where(e => e.Name == "Timmy");
+
+            foreach (var s in selected)
+                s.Salary = 40;
+
+            var timmysSalary = timmy.SingleOrDefault().Salary;
+
+            Assert.Equal(0, timmysSalary);
+        }
+
+        [Fact]
         public void WordCount()
         {
             var data = "Deer Bear River\nCar Car River\nDeer Car Bear";
@@ -209,29 +248,8 @@ namespace csharp_tutorial
             public override int GetHashCode() => Ssn.GetHashCode();
         }
 
-        public class User
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
-        }
+      
 
-        [Fact]
-        public void Lazy()
-        {
-            var names = new[] { "Timmy", "Sammy" };
-
-            // Creteate new User for Timmy and Sammy
-            var selected = names.Select(e => new User { Name = e });
-
-            // Select Timmy
-            var timmy = selected.Where(e => e.Name == "Timmy");
-
-            foreach (var s in selected)
-                s.Age = 40;
-
-            var timmysAge = timmy.SingleOrDefault().Age;
-
-            Assert.Equal(0, timmysAge);
-        }
+        
     }
 }

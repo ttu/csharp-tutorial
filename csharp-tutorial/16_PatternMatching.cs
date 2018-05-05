@@ -9,7 +9,7 @@ namespace csharp_tutorial
         [Fact]
         public void Switch()
         {
-            var items = new List<object> { "Hello", 1, 5, new List<int> { 1, 2, 3 }, new List<int> { 1, -2 } };
+            var items = new List<object> { "Hello", 1, 5, new List<int> { 1, 2, 3 }, new List<int> { 1, -2 }, new Square { Radius = 8 } };
 
             foreach (var item in items)
             {
@@ -30,6 +30,9 @@ namespace csharp_tutorial
                     case IEnumerable<int> e:
                         break;
 
+                    case Square e when e.Radius > 5:
+                        break;
+
                     default:
                         break;
                 }
@@ -37,17 +40,42 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public void If()
+        public void If_and_casting()
         {
-            var items = new List<object> { 1, "Hello" };
+            var items = new List<Shape>
+            {
+                new Square { Radius = 8 },
+                new Square { Radius = 2 },
+                new Circle()
+            };
 
             foreach (var item in items)
             {
-                if (item is int e)
-                { }
-                else if (item is string st)
+                if (item is Square s)
+                {
+                    // Safe casting with as
+                    var a = item as Circle;
+                    var h = item as Square;
+
+                    // Unsafe casting
+                    var a2 = (Circle)item;
+                }
+                else if (item is Circle c)
                 { }
             }
         }
+    }
+
+    public class Shape
+    { }
+
+    public class Square : Shape
+    {
+        public int Radius { get; set; }
+    }
+
+    public class Circle : Shape
+    {
+        public int Side { get; set; }
     }
 }
