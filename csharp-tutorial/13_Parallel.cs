@@ -58,14 +58,14 @@ namespace csharp_tutorial
             Trace.WriteLine($"Parallel.ForEach with async");
             var sw = Stopwatch.StartNew();
 
+            // No way to know when this is ready, so don't use async with Parallel.ForEach
             var res = Parallel.ForEach(idList, async (id) =>
             {
                 var result = await SlowAsyncAction1Sec(id);
                 Trace.WriteLine("Result: " + result);
             });
 
-            while (res.IsCompleted)
-                await Task.Delay(10);
+            await Task.Delay(3);
 
             Trace.WriteLine($"Parallel.ForEach with async: {sw.ElapsedMilliseconds}ms");
 
@@ -82,6 +82,7 @@ namespace csharp_tutorial
 
             /// NEXT
 
+            // This is not much faster, beacause AsParallel already runs these in parallel
             Trace.WriteLine($"AsParallel Select async");
             sw = Stopwatch.StartNew();
 
@@ -93,6 +94,7 @@ namespace csharp_tutorial
 
             /// NEXT
 
+            // This wont be parallel as this is worng: foreach (int i in idList.AsParallel())
             Trace.WriteLine($"Foreach AsParallel no async");
             sw = Stopwatch.StartNew();
 
@@ -106,23 +108,27 @@ namespace csharp_tutorial
 
             /// NEXT
 
-            // This wont be parallel
+            // This wont be parallel as this is worng: foreach (int i in idList.AsParallel())
             Trace.WriteLine($"Foreach AsParallel with async");
             sw = Stopwatch.StartNew();
 
-            foreach (int i in Enumerable.Range(1, 5).AsParallel())
+            foreach (int i in idList.AsParallel())
             {
                 var r = await SlowAsyncAction1Sec(i);
                 Trace.WriteLine($"id: {i} result:{r}");
             }
 
             Trace.WriteLine($"Foreach AsParallel with async: {sw.ElapsedMilliseconds}ms");
+        }
 
-            /// NEXT
+        [Fact]
+        public async Task AsyncAwaitForEachSelect()
+        {
+            var idList = Enumerable.Range(1, 5);
 
             // This will work
             Trace.WriteLine($"Foreach TaskWhenAll with async");
-            sw = Stopwatch.StartNew();
+            var sw = Stopwatch.StartNew();
 
             var results = new Dictionary<int, Task>(5);
 
@@ -138,11 +144,24 @@ namespace csharp_tutorial
 
             /// NEXT
 
-            Trace.WriteLine($"TaskWhenAll no async");
+            Trace.WriteLine($"Select TaskWhenAll no async");
 
             var slowTasks = idList.Select(i => SlowAsyncAction1Sec(i));
             // Tasks finish at different times, but returned array has results in the same order as slowTasks
             var slowResuls = await Task.WhenAll(slowTasks);
+
+            /// NEXT
+
+            Trace.WriteLine($"Select TaskWhenAll async");
+            sw = Stopwatch.StartNew();
+
+            var asyncActions2 = idList.Select(async e => await SlowAsyncAction1Sec(e)).ToList();
+
+            await Task.WhenAll(asyncActions2);
+
+            asyncActions2.ForEach(e => Trace.WriteLine("Result: " + e.Result));
+
+            Trace.WriteLine($"Select async: {sw.ElapsedMilliseconds}ms");
         }
 
         private void SlowAction1Sec(int id)
