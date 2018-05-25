@@ -69,6 +69,22 @@ namespace csharp_tutorial
 
             Trace.WriteLine($"Parallel.ForEach with async: {sw.ElapsedMilliseconds}ms");
 
+            // NEXT
+
+            Trace.WriteLine($"AsParallel().ForAll with async");
+            sw = Stopwatch.StartNew();
+
+            // No way to know when this is ready, so don't use async with Parallel.ForEach
+            idList.AsParallel().ForAll(async (id) =>
+            {
+                var result = await SlowAsyncAction1Sec(id);
+                Trace.WriteLine("Result: " + result);
+            });
+
+            await Task.Delay(3);
+
+            Trace.WriteLine($"AsParallel().ForAll with async: {sw.ElapsedMilliseconds}ms");
+
             /// NEXT
 
             Trace.WriteLine($"AsParallel Select sync");

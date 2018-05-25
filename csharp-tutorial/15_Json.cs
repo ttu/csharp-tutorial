@@ -27,6 +27,8 @@ namespace csharp_tutorial
         {
             using (var client = new HttpClient())
             {
+                // TODO: Update example as hsl service not working anymore
+
                 var jsonData = await client.GetStringAsync("http://dev.hsl.fi/siriaccess/vm/json?ProducerRef=HSL");
 
                 var locations = JObject.Parse(jsonData)["Siri"]["ServiceDelivery"]["VehicleMonitoringDelivery"]
