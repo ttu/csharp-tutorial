@@ -50,10 +50,63 @@ namespace csharp_tutorial
             };
         }
 
+        public IEnumerable<User> OrderByAge(IEnumerable<User> users)
+        {
+            return users.OrderBy(e => e.Age);
+        }
+
+        public IEnumerable<T> OrderByAgeGeneric<T>(IEnumerable<T> users) where T : User
+        {
+            return users.OrderBy(e => e.Age);
+        }
+
+        [Fact]
+        public void Function_Type_Specific()
+        {
+            // Common place to use generics are collections
+
+            var admins = new List<Admin> { new Admin { }, new Admin { } };
+            var powerUsers = new List<PowerUser> { new PowerUser { }, new PowerUser { } };
+
+            var sortedAdmins = OrderByAge(admins);
+            // sortedAdmins are now Users
+            //sortedAdmins.First().Type
+
+            var sortedAdminsGenerics = OrderByAgeGeneric(admins);
+            // Now sortedAdmins are Admins
+            var firstType = sortedAdminsGenerics.First().Type;
+        }
+
+        [Fact]
+        public void Casting()
+        {
+            var admin = new Admin { Name = "Timmy" };
+
+            var adminAsUser = admin as User;
+
+            var user = new User { Name = "James" };
+
+            // Can't cast to more specific type
+            // Safe casting with as
+            var userAsPU = user as PowerUser;
+            // Unsafe casting
+            var userAsPU2 = (PowerUser)user;
+        }
+
         public class User
         {
             public string Name { get; set; }
             public int Age { get; set; }
+        }
+
+        public class PowerUser : User
+        {
+            public string Password { get; set; }
+        }
+
+        public class Admin : User
+        {
+            public string Type { get; set; }
         }
     }
 }
