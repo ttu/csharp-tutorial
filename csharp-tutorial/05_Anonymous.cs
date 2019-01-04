@@ -82,7 +82,24 @@ namespace csharp_tutorial
         }
 
         [Fact]
-        public void DynamicsCompilerOff()
+        public void DynamicsCompilerOff_SetWrongType()
+        {
+            dynamic validNumber = GetNumber();
+            int other = TransformIntToString(validNumber);
+        }
+
+        int GetNumber()
+        {
+            return 4;
+        }
+
+        string TransformIntToString(int input)
+        {
+            return input.ToString();
+        }
+
+        [Fact]
+        public void DynamicsCompilerOff_ReturnWrongType()
         {
             int a = GetNumber2IfParameterTrue(true);
 
