@@ -24,7 +24,7 @@ namespace csharp_tutorial
         public async Task ExtensionMethods_InsteadOfInheritance()
         {
             var client = new HttpClient();
-            var response = await client.PatchAsync("www.google.com", new StringContent("Patch json here"));
+            var response = await client.OptionsAsync("www.google.com");
         }
     }
 
@@ -46,9 +46,11 @@ namespace csharp_tutorial
             return person.FirstName + " " + person.LastName;
         }
 
-        public static async Task<HttpResponseMessage> PatchAsync(this HttpClient client, string requestUri, HttpContent content)
+        // NOTE: Original example was with PatchAsync, but nowadays HttpClient includes PatchAsync method
+        public static async Task<HttpResponseMessage> OptionsAsync(this HttpClient client, string requestUri)
         {
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri) { Content = content };
+            //var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri) { Content = content };
+            var request = new HttpRequestMessage(new HttpMethod("OPTIONS"), requestUri);
             return await client.SendAsync(request);
         }
     }
@@ -56,9 +58,10 @@ namespace csharp_tutorial
     // Without ExtensionMethods we would need to inherit HttpClient
     public class MyHttpClient : HttpClient
     {
-        public async Task<HttpResponseMessage> PatchAsync(string requestUri, HttpContent content)
+        public async Task<HttpResponseMessage> OptionsAsync(string requestUri)
         {
-            var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri) { Content = content };
+            //var request = new HttpRequestMessage(new HttpMethod("PATCH"), requestUri) { Content = content };
+            var request = new HttpRequestMessage(new HttpMethod("OPTIONS"), requestUri);
             return await SendAsync(request);
         }
     }
