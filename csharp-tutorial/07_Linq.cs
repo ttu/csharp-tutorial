@@ -7,28 +7,11 @@ namespace csharp_tutorial
 {
     public class LinqExamples
     {
-        [Fact]
-        public void Lists_Etc()
-        {
-            // Lists, Arrays, Dictionaries, etc.
-            var list = new List<int> { 1, 2, 3 };
-            list.Add(4);
-
-            var list2 = new[] { 1, 2, 3 };
-
-            // And like all fucked up languages C# has also many ways to do a same thing
-            var dic = new Dictionary<int, string>
-            {
-                [1] = "test",
-                [2] = "unit"
-            };
-
-            var dic2 = new Dictionary<int, string>
-            {
-                { 1, "test" },
-                { 2, "test" }
-            };
-        }
+        // Linq was added to standard library before all this was widely used and
+        // MS decided to use SQL namespace instead of mathematical one
+        // map is select
+        // filter is where
+        // reduce is aggregate
 
         private class Person
         {
@@ -40,12 +23,6 @@ namespace csharp_tutorial
         [Fact]
         public void Linq()
         {
-            // Linq was added to standard library before all this was widely used and
-            // MS decided to use SQL namespace instead of mathematical one
-            // map is select
-            // filter is where
-            // reduce is aggregate
-
             var batch1 = new List<Person>(10)
             {
                 new Person { Name = "Andy", Location = 1, Salary = 1 },
@@ -69,13 +46,14 @@ namespace csharp_tutorial
             var location2 = team.Where(x => x.Location == 2);
 
             // Map (execute selection to every item)
-            var map = team.Select(x => new { x.Name, x.Salary });
+            var mapWithNameAndSalary = team.Select(x => new { x.Name, x.Salary });
             var map2 = team.Select(x => x.Location + ":" + x.Name);
 
             // Reduce (list to single item)
             var totalExpense = team.Select(x => x.Salary).Sum();
-            var totalWithAfgg = team.Select(x => x.Salary).Aggregate((prev, curr) => prev + curr);
-            var allNames = team.Select(x => x.Name).Aggregate((prev, curr) => prev + "," + curr);
+            var totalWithAfgg = team.Select(x => x.Salary).Aggregate((acc, curr) => acc + curr);
+
+            var allNames = team.Select(x => x.Name).Aggregate((acc, curr) => acc + "," + curr);
 
             var batch1bonus = new int[] { 5, 2, 3, 4 };
             var bonusAdded = batch1.Zip(batch1bonus, (person, bonus) => new { person.Name, Pay = person.Salary + bonus });
@@ -99,6 +77,8 @@ namespace csharp_tutorial
                 .ForEach(x => x.Salary += 1);
 
             // Because person is a reference type, original item's salary changes
+
+            // Some think that ForEach should not be part of LINQ as it is mainly used to mutate data
         }
 
         [Fact]
@@ -247,9 +227,5 @@ namespace csharp_tutorial
             // Dictionaries and Hashsets use hash code to compare elements
             public override int GetHashCode() => Ssn.GetHashCode();
         }
-
-      
-
-        
     }
 }
