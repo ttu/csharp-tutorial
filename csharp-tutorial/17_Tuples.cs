@@ -48,27 +48,37 @@ namespace csharp_tutorial
             Assert.Equal("Timmy", result.name);
             Assert.Equal(25, result.age);
 
-            var i = GetPersonInfo();
+            var personTuple = GetPersonInfoValueTuple();
 
-            Assert.Equal("Timmy", i.Item1);
-            Assert.Equal(25, i.Item2);
+            Assert.Equal("Timmy", personTuple.Item1);
+            Assert.Equal(25, personTuple.Item2);
 
-            var (name, age) = GetPersonInfo();
+            var (name, age) = GetPersonInfoValueTuple();
 
-            var p = GetPersonInfoNamed();
+            Assert.Equal("Timmy", name);
+            Assert.Equal(25, age);
 
-            Assert.Equal("Timmy", p.name);
-            Assert.Equal(25, p.age);
+            var person = GetPersonInfoNamedTuple();
+
+            Assert.Equal("Timmy", person.name);
+            Assert.Equal(25, person.age);
         }
 
-        private static (string, int) GetPersonInfo()
+        private Tuple<string, int> GetPersonInfoTuple()
+        {
+            var myName = "Timmy";
+            var myAge = 25;
+            return Tuple.Create(myName, myAge);
+        }
+
+        private (string, int) GetPersonInfoValueTuple()
         {
             var myName = "Timmy";
             var myAge = 25;
             return (myName, myAge);
         }
 
-        private static (string name, int age) GetPersonInfoNamed()
+        private (string name, int age) GetPersonInfoNamedTuple()
         {
             var myName = "Timmy";
             var myAge = 25;
