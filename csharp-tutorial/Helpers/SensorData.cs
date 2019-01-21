@@ -12,10 +12,10 @@ namespace csharp_tutorial
 
         public static double GetDataSync(string sensorId = "iddqd")
         {
-            var request = HttpWebRequest.Create($"{URL}{sensorId}") as HttpWebRequest;
+            var request = HttpWebRequest.Create($"{URL}{sensorId}");
             request.Method = "GET";
 
-            using (var response = request.GetResponse() as HttpWebResponse)
+            using (var response = request.GetResponse())
             {
                 var dataStream = response.GetResponseStream();
                 var reader = new StreamReader(dataStream);
@@ -28,6 +28,25 @@ namespace csharp_tutorial
                 dynamic sensor = JsonConvert.DeserializeObject(sensorJson);
 
                 return sensor.data;
+            }
+        }
+
+        public static SensorDto GetSensorSync(string sensorId = "iddqd")
+        {
+            var request = HttpWebRequest.Create($"{URL}{sensorId}");
+            request.Method = "GET";
+
+            using (var response = request.GetResponse())
+            {
+                var dataStream = response.GetResponseStream();
+                var reader = new StreamReader(dataStream);
+
+                var sensorJson = reader.ReadToEnd();
+
+                reader.Close();
+                dataStream.Close();
+
+                return JsonConvert.DeserializeObject<SensorDto>(sensorJson);
             }
         }
 

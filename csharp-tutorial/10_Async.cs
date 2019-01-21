@@ -1,6 +1,7 @@
 ﻿using csharp_tutorial.Helpers;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -101,22 +102,27 @@ namespace csharp_tutorial
         {
             var ids = new string[] { "iddqd", "idkfq", "abba5", "acdc1" };
 
-            var tasks = new List<Task<double>>();
+            var tasks = new List<Task<SensorDto>>();
 
             foreach (var id in ids)
             {
-                var t = Task.Run(() =>
+                var task = Task.Run(() =>
                 {
-                    var value = SensorData.GetDataSync(id);
+                    var value = SensorData.GetSensorSync(id);
                     return value;
                 });
 
-                tasks.Add(t);
+                // var task = Task.Run(() => SensorData.GetSensorSync(id));
+
+                tasks.Add(task);
             }
 
-            //var tasks = ids.Select(i => Task.Run(() => SensorData.GetDataSync(i)));
-
             var results = await Task.WhenAll(tasks);
+
+            // Same with Linq
+            var tasksLinq = ids.Select(i => Task.Run(() => SensorData.GetSensorSync(i))).ToList();
+
+            var resultsLinq = await Task.WhenAll(tasksLinq);
         }
 
         [Fact]
@@ -132,9 +138,14 @@ namespace csharp_tutorial
                 tasks.Add(dataTask);
             }
 
-            //var tasks = ids.Select(i => SensorData.GetDataAsync(i));
-
             var results = await Task.WhenAll(tasks);
+
+            var tasksLinq = ids.Select(e => SensorData.GetSensorAsync(e)).ToList();
+
+            var results2 = await Task.WhenAll(tasksLinq);
+
+            // Select is lazy, but now tasksLinq is a List
+            var high = tasksLinq.Where(e => e.Result.Data > 10).ToList();
         }
     }
 }

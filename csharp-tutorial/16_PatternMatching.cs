@@ -9,10 +9,18 @@ namespace csharp_tutorial
         [Fact]
         public void Switch()
         {
-            var items = new List<object> { "Hello", 1, 5, new List<int> { 1, 2, 3 }, new List<int> { 1, -2 }, new Square { Radius = 8 } };
+            var items = new List<object> {
+                "Hello",
+                1,
+                5,
+                new List<int> { 1, 2, 3 },
+                new List<int> { 1, -2 },
+                new Square { Side = 8 }
+            };
 
             foreach (var item in items)
             {
+                // NOTE: Swithc case will show compiler error if case is already handled
                 switch (item)
                 {
                     case string e:
@@ -30,7 +38,11 @@ namespace csharp_tutorial
                     case IEnumerable<int> e:
                         break;
 
-                    case Square e when e.Radius > 5:
+                    case Square e when e.Side > 5:
+                        break;
+
+                    case Square e when e.Side > 5 && e.Side < 10:
+                        // Compiler won't show errors in cases like this
                         break;
 
                     default:
@@ -44,9 +56,10 @@ namespace csharp_tutorial
         {
             var items = new List<Shape>
             {
-                new Square { Radius = 8 },
-                new Square { Radius = 2 },
-                new Circle()
+                new Square { Side = 8 },
+                new Square { Side = 2 },
+                new Circle { Radius = 5},
+                new Circle { Radius = 11},
             };
 
             foreach (var item in items)
@@ -58,9 +71,11 @@ namespace csharp_tutorial
                     var h = item as Square;
 
                     // Unsafe casting
-                    var a2 = (Circle)item;
+                    //var a2 = (Circle)item;
                 }
-                else if (item is Circle c)
+                else if (item is Circle c && c.Radius > 10)
+                { }
+                else if (item is Circle ci)
                 { }
             }
         }
@@ -71,11 +86,11 @@ namespace csharp_tutorial
 
     public class Square : Shape
     {
-        public int Radius { get; set; }
+        public int Side { get; set; }
     }
 
     public class Circle : Shape
     {
-        public int Side { get; set; }
+        public int Radius { get; set; }
     }
 }

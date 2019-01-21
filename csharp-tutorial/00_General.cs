@@ -68,6 +68,9 @@ namespace csharp_tutorial
 
                 return Capitalize(name);
             }
+
+            // When to use field vs property
+            // When to use property vs method
         }
 
         [Fact]

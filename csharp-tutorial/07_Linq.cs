@@ -7,11 +7,13 @@ namespace csharp_tutorial
 {
     public class LinqExamples
     {
-        // Linq was added to standard library before all this was widely used and
+        // LINQ was added to standard library before all this was widely used and
         // MS decided to use SQL namespace instead of mathematical one
         // map is select
         // filter is where
         // reduce is aggregate
+
+        // LINQ is a good example of extension methods, delegates and anonymous types
 
         private class Person
         {
@@ -49,12 +51,31 @@ namespace csharp_tutorial
             var mapWithNameAndSalary = team.Select(x => new { x.Name, x.Salary });
             var map2 = team.Select(x => x.Location + ":" + x.Name);
 
-            // Reduce (list to single item)
-            var totalExpense = team.Select(x => x.Salary).Sum();
-            var totalWithAfgg = team.Select(x => x.Salary).Aggregate((acc, curr) => acc + curr);
+            // Reduce (list to single item), Sum, Average
+            var totalWithAfgg = team
+                                .Select(x => x.Salary)
+                                .Aggregate((acc, curr) => acc + curr);
 
+            var totalExpense = team.Select(x => x.Salary).Sum();
+            var totalExpense2 = team.Sum(x => x.Salary);
+            var average = team.Average(e => e.Salary);
+
+            var highestSalary = batch1.Where(e => e.Salary == batch1.Max(x => x.Salary));
+
+            // All names to string with aggregate
             var allNames = team.Select(x => x.Name).Aggregate((acc, curr) => acc + "," + curr);
 
+            // First, Single
+            var item = batch1.FirstOrDefault(e => e.Location == 3);
+            var item2 = batch1.Where(e => e.Location == 2).First();
+            var item3 = batch1.Single(e => e.Salary == 3);
+
+            // Group by
+            var locationSalary = batch1
+                                    .GroupBy(e => e.Location)
+                                    .Select(e => new { Location = e.Key, TotalSalary = e.Sum(x => x.Salary) });
+
+            // Zip
             var batch1bonus = new int[] { 5, 2, 3, 4 };
             var bonusAdded = batch1.Zip(batch1bonus, (person, bonus) => new { person.Name, Pay = person.Salary + bonus });
         }

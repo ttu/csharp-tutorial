@@ -21,6 +21,9 @@ namespace csharp_tutorial
 
             // Old-school delegate syntax (do not use)
             Func<string, string> func3 = delegate (string s) { return $"Hello {s}"; };
+            // In same case had to use delefate where amount of parameters was different
+            // public delegate T Method(params object[] parameters);
+            //var funcParams = delegate (params object[] s) { return $"Hello {s}"; };
 
             // Or can just take reference to method
             Func<string, string> func4 = GetHelloText;

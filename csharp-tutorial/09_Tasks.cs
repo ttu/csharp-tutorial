@@ -22,8 +22,9 @@ namespace csharp_tutorial
                 while (true)
                 {
                     // Do something important
+                    var data = SensorData.GetSensorSync();
                     Thread.Sleep(1000);
-                    Trace.WriteLine("In the background");
+                    Trace.WriteLine($"In the background: {data.Data}");
                 }
             }
 
@@ -41,8 +42,9 @@ namespace csharp_tutorial
             {
                 while (true)
                 {
+                    var data = SensorData.GetSensorSync();
                     Thread.Sleep(1000);
-                    Trace.WriteLine("In the background");
+                    Trace.WriteLine($"In the background: {data.Data}");
                 }
             }
 
@@ -57,10 +59,11 @@ namespace csharp_tutorial
         {
             // Often tasks return something rather than just run "forever" on the background
 
-            int BackgroundExecution()
+            double BackgroundExecution()
             {
+                var data = SensorData.GetSensorSync();
                 Thread.Sleep(1000);
-                return 2;
+                return data.Data;
             }
 
             var task = Task.Run(() => BackgroundExecution());
@@ -89,8 +92,7 @@ namespace csharp_tutorial
                 while (token.IsCancellationRequested == false)
                 {
                     var sensorToFetch = collection.Take(token);
-                    // .Result is a blocking action
-                    var sensorData = SensorData.GetSensorAsync(sensorToFetch).Result;
+                    var sensorData = SensorData.GetSensorSync(sensorToFetch);
 
                     // Do something nice with the result
                     Trace.WriteLine(JsonConvert.SerializeObject(sensorData));
@@ -101,7 +103,7 @@ namespace csharp_tutorial
             while (true)
             {
                 await Task.Delay(5000);
-                collection.Add(new Random().Next(1, 1000) % 2 == 0 ? "abba5" : "iddqd");
+                collection.Add(DateTime.Now.Ticks % 2 == 0 ? "abba5" : "iddqd");
             }
         }
 

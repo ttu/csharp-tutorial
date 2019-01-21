@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Dynamic;
 using Xunit;
 
 namespace csharp_tutorial
 {
+    // NOTE: Move this to after delegates
+
     public class AnonymousExamples
     {
         [Fact]
@@ -25,11 +28,16 @@ namespace csharp_tutorial
         [Fact]
         public void Anonymous_Types()
         {
-            var hello = GetHello();
+            var hello = new { Text = "Hello", SubType = new { Text = "World" } };
 
             //String interpolation vs format
             Assert.Equal("Hello World", $"{hello.Text} {hello.SubType.Text}");
             Assert.Equal("Hello World", string.Format("{0} {1}", hello.Text, hello.SubType.Text));
+
+            var helloDynamic = GetHello();
+
+            //String interpolation
+            Assert.Equal("Hello World", $"{helloDynamic.Text} {helloDynamic.SubType.Text}");
         }
 
         // Can return anonymous types with dynamic
@@ -57,28 +65,37 @@ namespace csharp_tutorial
             person.Age = 30;
             Assert.Equal(30, person.Age);
 
-            dynamic CreateObjectFor(params dynamic[] values)
+            dynamic CreateObjectFor(Dictionary<string, object> values)
             {
                 dynamic personExpando = new ExpandoObject();
                 var dictionary = (IDictionary<string, object>)personExpando;
 
-                // We just have to rely that values are tuples, but that is normal with dynamic programming
                 foreach (var pair in values)
-                    dictionary.Add(pair.Item1, pair.Item2);
+                    dictionary.Add(pair.Key, pair.Value);
 
                 return personExpando;
             }
 
-            dynamic person2 = CreateObjectFor(Tuple.Create("Name", "James"), Tuple.Create("Age", 40));
+            var properties = new Dictionary<string, object>()
+            {
+                ["Name"] = "James",
+                ["Age"] = 50
+            };
+
+            dynamic person2 = CreateObjectFor(properties);
 
             // Common case is that you get some data, parse do some stuff and create a new object from it and send it
             person2.Age = 50;
             var json = JsonConvert.SerializeObject(person2);
 
             // It is also possible to add methods
+            person2.SayHello = new Action(() => Trace.WriteLine("Hello"));
+
             var expDict = (IDictionary<string, object>)person2;
-            expDict.Add("Say", new Action(() => { Console.WriteLine("Hello"); }));
-            person2.Say();
+            expDict.Add("SayWorld", new Action(() => { Trace.WriteLine("World"); }));
+
+            person2.SayHello();
+            person2.SayWorld();
         }
 
         [Fact]
@@ -88,12 +105,12 @@ namespace csharp_tutorial
             int other = TransformIntToString(validNumber);
         }
 
-        int GetNumber()
+        private int GetNumber()
         {
             return 4;
         }
 
-        string TransformIntToString(int input)
+        private string TransformIntToString(int input)
         {
             return input.ToString();
         }
