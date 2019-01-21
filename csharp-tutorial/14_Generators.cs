@@ -1,16 +1,12 @@
-﻿using csharp_tutorial.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class Generators
     {
-        public Generators(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
-
         public class WebRequester
         {
             public IEnumerable<double> GetValues()

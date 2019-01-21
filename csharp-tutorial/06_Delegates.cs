@@ -1,15 +1,11 @@
-﻿using csharp_tutorial.Helpers;
-using System;
+﻿using System;
 using System.Diagnostics;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class DelegateExamples
     {
-        public DelegateExamples(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
-
         [Fact]
         public void Anonymous_Functions()
         {

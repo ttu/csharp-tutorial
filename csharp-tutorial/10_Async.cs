@@ -1,18 +1,14 @@
-﻿using csharp_tutorial.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace csharp_tutorial
 {
     public class AsyncExamples
     {
-        public AsyncExamples(ITestOutputHelper outputHelper) => Trace.Listeners.Add(new TestTraceListener(outputHelper));
-
         [Fact]
         public async Task TaskAndResult()
         {
