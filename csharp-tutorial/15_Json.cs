@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using csharp_tutorial.Helpers.Hsl;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,7 +13,7 @@ namespace csharp_tutorial
         [Fact]
         public async Task Get_Hsl_Data()
         {
-            var results = await HslService.GetLocation(HslService.SearchType.LineRef, "17");
+            var results = await HslService.GetLocation(HslService.SearchType.VehicleRef, "3606");
         }
     }
 
@@ -23,23 +25,45 @@ namespace csharp_tutorial
             VehicleRef
         }
 
-        public static async Task<dynamic> GetLocation(SearchType type, string reference)
+        public static async Task<dynamic> GetLocation(SearchType searchType, string reference)
         {
             using (var client = new HttpClient())
             {
-                // TODO: Update example as hsl service not working anymore
+                // NOTE: HSL endpoint is not working anymore. Use hard coded data.
+                //var jsonData = await client.GetStringAsync("http://dev.hsl.fi/siriaccess/vm/json?ProducerRef=HSL");
+                var jsonData = HslJsonSample.Json;
 
-                var jsonData = await client.GetStringAsync("http://dev.hsl.fi/siriaccess/vm/json?ProducerRef=HSL");
+                await Task.Delay(0);
 
-                var locations = JObject.Parse(jsonData)["Siri"]["ServiceDelivery"]["VehicleMonitoringDelivery"]
-                        .SelectMany(s => s["VehicleActivity"])
-                        .Where(s => s["MonitoredVehicleJourney"][(type.ToString())]["value"].ToString() == reference)
-                        .Select(s => s["MonitoredVehicleJourney"])
-                        .Select(s => new
-                        {
-                            Lon = s["VehicleLocation"]["Longitude"],
-                            Lat = s["VehicleLocation"]["Latitude"]
-                        });
+                // Json example can use either SelectToken or indexers
+                var locations = JObject.Parse(jsonData)
+                       .SelectToken("Siri.ServiceDelivery.VehicleMonitoringDelivery")
+                       .SelectMany(s => s["VehicleActivity"])
+                       .Where(s => s.SelectToken($"MonitoredVehicleJourney.{searchType.ToString()}.value").ToString() == reference)
+                       .Select(s => s["MonitoredVehicleJourney"])
+                       .Select(s => new
+                       {
+                           Lon = s["VehicleLocation"]["Longitude"],
+                           Lat = s["VehicleLocation"]["Latitude"]
+                       })
+                       .FirstOrDefault();
+
+                // Example with generated model
+
+                var data = JsonConvert.DeserializeObject<HslSiriData>(jsonData);
+
+                var locationsFromModel = data.Siri.ServiceDelivery.VehicleMonitoringDelivery
+                   .SelectMany(e => e.VehicleActivity)
+                   .Where(e => searchType == SearchType.VehicleRef 
+                                ? e.MonitoredVehicleJourney.VehicleRef.Value == reference
+                                : e.MonitoredVehicleJourney.LineRef.Value == reference)
+                   .Select(e => e.MonitoredVehicleJourney)
+                   .Select(e => new
+                   {
+                       Lon = e.VehicleLocation.Longitude,
+                       Lat = e.VehicleLocation.Latitude
+                   })
+                   .FirstOrDefault();
 
                 return locations;
 
