@@ -74,9 +74,13 @@ namespace csharp_tutorial
             int? myValue = null;
             int valueCheck = myValue ?? 2;
 
+            Assert.Equal(2, valueCheck);
+
             myValue = 6;
 
             valueCheck = myValue ?? 2;
+
+            Assert.Equal(6, valueCheck);
 
             if (myValue.HasValue)
             {

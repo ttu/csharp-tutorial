@@ -20,7 +20,7 @@ namespace csharp_tutorial
 
             foreach (var item in items)
             {
-                // NOTE: Swithc case will show compiler error if case is already handled
+                // NOTE: Switch case will show compiler error if case is already handled
                 switch (item)
                 {
                     case string e:
@@ -30,6 +30,7 @@ namespace csharp_tutorial
                         break;
 
                     case int e:
+                        // Try moving this up
                         break;
 
                     case IEnumerable<int> e when e.All(i => i > 0):
@@ -76,7 +77,9 @@ namespace csharp_tutorial
                 else if (item is Circle c && c.Radius > 10)
                 { }
                 else if (item is Circle ci)
-                { }
+                {
+                    // No compiler errors if this is moved up
+                }
             }
         }
     }

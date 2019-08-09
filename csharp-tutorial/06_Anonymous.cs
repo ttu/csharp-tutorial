@@ -7,8 +7,6 @@ using Xunit;
 
 namespace csharp_tutorial
 {
-    // NOTE: Move this to after delegates
-
     public class AnonymousExamples
     {
         [Fact]

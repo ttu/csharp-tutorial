@@ -20,13 +20,6 @@ namespace csharp_tutorial
          *
          */
 
-        private class Person
-        {
-            public string Name { get; set; }
-            public int Location { get; set; }
-            public int Salary { get; set; }
-        }
-
         public class WebRequesterAsync
         {
             public IEnumerable<Task<SensorDto>> OpenStream(IEnumerable<string> ids)
@@ -57,6 +50,13 @@ namespace csharp_tutorial
             }
         }
 
+        private class Person
+        {
+            public string Name { get; set; }
+            public int Location { get; set; }
+            public int Salary { get; set; }
+        }
+
         [Fact]
         public void Linq_Lazy()
         {
@@ -85,9 +85,13 @@ namespace csharp_tutorial
         [Fact]
         public async Task Linq_Select_Lazy()
         {
+            // 07_Linq has and example of LINQ Select. This example shows more complicated case with API requests
+
+            // Find first sensor with data value under 23
+
             var sensorIds = new[] { "iddqd", "idkfa", "abba5", "acdc1" };
 
-            // Just as an example. Where is not blocking as where doesn't support async
+            // Have to use own extension method as Where/First etc. do not support async
             var item = await sensorIds.Select(async id =>
                                     {
                                         var data = await SensorData.GetSensorAsync(id);
