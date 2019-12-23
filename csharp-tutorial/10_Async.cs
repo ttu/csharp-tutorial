@@ -114,11 +114,16 @@ namespace csharp_tutorial
             }
 
             var results = await Task.WhenAll(tasks);
+        }
 
-            // Same with Linq
-            var tasksLinq = ids.Select(i => Task.Run(() => SensorData.GetSensorSync(i))).ToList();
+        [Fact]
+        public async Task Tasks_FromSync_Linq()
+        {
+            var ids = new string[] { "iddqd", "idkfq", "abba5", "acdc1" };
 
-            var resultsLinq = await Task.WhenAll(tasksLinq);
+            var tasks = ids.Select(i => Task.Run(() => SensorData.GetSensorSync(i))).ToList();
+
+            var results = await Task.WhenAll(tasks);
         }
 
         [Fact]
@@ -135,13 +140,77 @@ namespace csharp_tutorial
             }
 
             var results = await Task.WhenAll(tasks);
+        }
+
+        [Fact]
+        public async Task Tasks_FromAsync_Linq()
+        {
+            var ids = new string[] { "iddqd", "idkfq", "abba5", "acdc1" };
 
             var tasksLinq = ids.Select(e => SensorData.GetSensorAsync(e)).ToList();
 
-            var results2 = await Task.WhenAll(tasksLinq);
+            var results = await Task.WhenAll(tasksLinq);
 
             // Select is lazy, but now tasksLinq is a List
-            var high = tasksLinq.Where(e => e.Result.Data > 10).ToList();
+            // Try what happes without .ToList() and with it
+            var over10Sensors = tasksLinq.Where(e => e.Result.Data > 10).ToList();
+        }
+
+        // Sometimes is is really hard to understand how Framework behaves
+        // Examples have blocking Sleep before and after await Delay
+        [Fact]
+        public async Task Threading_Is_Hard()
+        {
+            var partiallyBlocking = LongRunningWithSync_Blocking();
+
+            await partiallyBlocking;
+
+            var returnImmediately = LongRunningWithSync_Non_Blocking();
+
+            await returnImmediately;
+
+            var returnImmediately2 = LongRunningWithSync_Extra_Thread();
+
+            await returnImmediately2;
+        }
+
+        private async Task LongRunningWithSync_Blocking()
+        {
+            var delayedTasks = Enumerable.Range(0, 5).Select(async e =>
+            {
+                Thread.Sleep(e * 1000);
+                await Task.Delay(e * 1000);
+                return e;
+            });
+
+            await Task.WhenAll(delayedTasks);
+        }
+
+        private async Task LongRunningWithSync_Non_Blocking()
+        {
+            var delayedTasks = Enumerable.Range(0, 5).Select(async e =>
+            {
+                await Task.Delay(e * 1000);
+                Thread.Sleep(e * 1000);
+                return e;
+            });
+
+            await Task.WhenAll(delayedTasks);
+        }
+
+        private async Task LongRunningWithSync_Extra_Thread()
+        {
+            var delayedTasks = Enumerable.Range(0, 5).Select(async e =>
+            {
+                return await Task.Run(async () =>
+                {
+                    Thread.Sleep(e * 1000);
+                    await Task.Delay(e * 1000);
+                    return e;
+                });
+            });
+
+            await Task.WhenAll(delayedTasks);
         }
     }
 }
