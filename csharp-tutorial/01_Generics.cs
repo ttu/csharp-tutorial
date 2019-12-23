@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Xunit;
 
@@ -28,12 +29,25 @@ namespace csharp_tutorial
 
             dict.Add("integration", new User { Age = 50 });
 
-            // And like all crappy languages C# has also many ways to do a same thing
+            // And like most languages, C# has also many ways to do a same things
             var dict2 = new Dictionary<string, User>
             {
                 { "test", new User { Age = 30 } },
                 { "unit", new User { Age = 25 } }
             };
+
+            IReadOnlyList<string> readonlyList = new List<string> { "hello" };
+
+            var list = new List<string> { "hello" };
+            var reaondOnlyCollection = new ReadOnlyCollection<string>(list);
+
+            var occupationsMutable = new Dictionary<string, string>
+            {
+                ["Malcolm"] = "Captain",
+                ["Kaylee"] = "Mechanic"
+            };
+            occupationsMutable["Jayne"] = "Public Relations";
+            occupationsMutable.Add("Rick", "Navigation");
         }
 
         public class GenericFunctionsBag<T> where T : class
@@ -101,7 +115,7 @@ namespace csharp_tutorial
 
         public IEnumerable<User> OrderByAge(IEnumerable<User> users)
         {
-            // OrderBy comes wront ling, mow of that later
+            // OrderBy comes from linq, more of that later
             return users.OrderBy(e => e.Age);
         }
 

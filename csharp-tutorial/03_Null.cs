@@ -101,7 +101,7 @@ namespace csharp_tutorial
         }
 
 #nullable enable
-// Normally would just add <Nullable>enabled</Nullable> to csproj-file to enable nullable for the whole project
+// Normally would just add <Nullable>enable</Nullable> to csproj-file to enable nullable for the whole project
 
         [Fact]
         public void Nullable_ReferenceTypes()
